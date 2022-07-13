@@ -1,0 +1,32 @@
+[req]
+default_bits = {{ csr_keysize }}
+prompt = no
+default_md = {{ csr_hash_algo }}
+req_extensions = req_ext
+distinguished_name = dn
+
+[ dn ]
+C              = {{ csr_country }}
+O              = {{ csr_organization }}
+OU             = {{ csr_organizational_unit }}
+emailAddress   = {{ csr_email }}
+CN             = {{ csr_common_name | default(ansible_fqdn) }}
+{% if csr_locality is defined %}
+L              = {{ csr_locality }}
+{% endif %}
+
+[ req_ext ]
+subjectAltName = @alt_names
+
+{% set ip_index = ["variable scope is a mess in jinja"] %}
+{% set dns_index = ["so here is this horrible hack to implement a counter..."] %}
+[ alt_names ]
+{% for san in ( _csr_sans | sort ) %}
+{% if san | ipaddr %}
+IP.{{ ip_index | length }} = {{ san }}
+{% set _ = ip_index.append("jinja sucks") %}
+{% else %}
+DNS.{{ dns_index | length }} = {{ san }}
+{% set _ = dns_index.append("jinja sucks") %}
+{% endif %}
+{% endfor %}

@@ -1,0 +1,16 @@
+galaxy_info:
+  author: Rémi Laurent
+  maintainer: Gautier FRANCHINI
+  description: Simple OpenSSL CSR wrapper
+  company: n/a
+
+  license: MIT
+
+  min_ansible_version: 2.9.6
+
+  galaxy_tags:
+    - openssl
+    - csr
+    - req
+
+dependencies: []

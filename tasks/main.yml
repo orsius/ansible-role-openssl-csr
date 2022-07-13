@@ -1,0 +1,22 @@
+- assert:
+    that:
+      - csr_country is defined
+      - csr_organization is defined
+      - csr_organizational_unit is defined
+      - csr_email is defined
+
+- name: generate csr openssl.cnf template
+  template:
+    src: openssl-csr.cnf.j2
+    dest: /etc/ssl/openssl-csr.cnf
+
+- name: generating CSR
+  shell: "openssl req -new -sha256 -nodes -out '/etc/ssl/{{ ansible_fqdn }}.csr' -newkey rsa:2048 -keyout '/etc/ssl/{{ ansible_fqdn }}.key' -config /etc/ssl/openssl-csr.cnf"
+  args:
+    creates: "/etc/ssl/{{ ansible_fqdn }}.key"
+
+- name: fetch CSR on local host
+  fetch:
+    src: "/etc/ssl/{{ ansible_fqdn }}.csr"
+    dest: "files/{{ ansible_fqdn }}.csr"
+    flat: yes

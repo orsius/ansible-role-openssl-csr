@@ -1,0 +1,16 @@
+---
+# defaults file for ansible-role-openssl-csr
+
+# csr_country: "CC"
+# csr_locality: "City"
+# csr_organization: "Organization name"
+# csr_organizational_unit: "IT department"
+# csr_email: "support@domain.com"
+
+csr_keysize: "2048"
+csr_hash_algo: "sha256"
+
+csr_common_name: "{{ ansible_fqdn }}"
+csr_sans: []
+
+_csr_sans: "{{ [ csr_common_name ] | union(csr_sans) }}"

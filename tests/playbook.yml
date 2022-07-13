@@ -1,0 +1,14 @@
+- hosts: all
+  become: yes
+  roles:
+    - ansible-role-openssl-csr
+  vars:
+    csr_country: "BE"
+    csr_locality: "Bruxelles"
+    csr_organization: "Lamba INC"
+    csr_organizational_unit: "IT LAB"
+    csr_email: "null@yourdomain.com"
+    csr_sans:
+      - "::1"
+      - "192.168.121.155"
+      - "alias.vagrant.test"
